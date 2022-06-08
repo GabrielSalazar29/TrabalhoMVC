@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using TrabalhoMVC.Models;
-using TrabalhoMVC.Models.ViewModels;
 
 namespace TrabalhoMVC.Controllers
 {

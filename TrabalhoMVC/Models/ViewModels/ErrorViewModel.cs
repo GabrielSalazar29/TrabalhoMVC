@@ -1,6 +1,6 @@
 using System;
 
-namespace TrabalhoMVC.Models.ViewModels
+namespace TrabalhoMVC.Models
 {
 	public class ErrorViewModel
 	{
