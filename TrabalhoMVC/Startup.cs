@@ -28,7 +28,8 @@ namespace TrabalhoMVC
 			services.AddControllersWithViews();
 
 		    services.AddDbContext<TrabalhoMVCContext>(options =>
-		            options.UseSqlServer(Configuration.GetConnectionString("TrabalhoMVCContext")));
+		            options.UseMySql(Configuration.GetConnectionString("TrabalhoMVCContext"), builder =>
+					builder.MigrationsAssembly("TrabalhoMVC")));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
