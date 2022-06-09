@@ -14,6 +14,8 @@ namespace TrabalhoMVC.Data
         {
         }
 
-        public DbSet<TrabalhoMVC.Models.Departamento> Departamento { get; set; }
+        public DbSet<Departamento> Departamento { get; set; }
+        public DbSet<Vendedor> Vendedores { get; set; }
+        public DbSet<RegistroVendas> RegistroVendas { get; set; }
     }
 }
