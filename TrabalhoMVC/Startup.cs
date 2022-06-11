@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using TrabalhoMVC.Data;
+using TrabalhoMVC.Services;
 
 namespace TrabalhoMVC
 {
@@ -32,6 +33,7 @@ namespace TrabalhoMVC
 					builder.MigrationsAssembly("TrabalhoMVC")));
 
 			services.AddScoped<SeedingService>();
+			services.AddScoped<VendedorService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
