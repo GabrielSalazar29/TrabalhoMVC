@@ -20,5 +20,10 @@ namespace TrabalhoMVC.Services {
 
 			return _context.Vendedores.ToList();
 		}
+
+		public void Insert(Vendedor vendedor) {
+			_context.Add(vendedor);
+			_context.SaveChanges();
+		}
 	}
 }
