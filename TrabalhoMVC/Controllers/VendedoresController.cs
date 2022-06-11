@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TrabalhoMVC.Models;
 using TrabalhoMVC.Models.ViewModels;
 using TrabalhoMVC.Services;
+using TrabalhoMVC.Services.Exceptions;
 
 namespace TrabalhoMVC.Controllers {
 	public class VendedoresController : Controller {
@@ -78,6 +79,43 @@ namespace TrabalhoMVC.Controllers {
 			}
 
 			return View(vendedor);
+		}
+
+		public IActionResult Edit(int? id) {
+
+			if (id == null) {
+
+				return NotFound();
+			}
+			var vendedor = _vendedorService.FindById(id.Value);
+			if (vendedor == null) {
+
+				return NotFound();
+			}
+
+			List<Departamento> departamentos = _departamentoService.FindAll();
+			VendedorFormViewModel viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departamentos };
+			return View(viewModel);
+		}
+
+		[HttpPost]
+		public IActionResult Edit(int id, Vendedor vendedor) {
+
+			if(id != vendedor.Id) {
+				return BadRequest();
+			}
+
+			try {
+			_vendedorService.Update(vendedor);
+			return RedirectToAction(nameof(Index));
+
+			} catch (NotFoundException){
+
+				return NotFound();
+			} catch (DbConcurrencyException) {
+
+				return BadRequest();
+			}
 		}
 	}
 }

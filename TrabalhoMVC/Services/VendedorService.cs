@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrabalhoMVC.Data;
 using TrabalhoMVC.Models;
+using TrabalhoMVC.Services.Exceptions;
 
 namespace TrabalhoMVC.Services {
 	public class VendedorService {
@@ -39,6 +40,23 @@ namespace TrabalhoMVC.Services {
 
 			_context.Vendedores.Remove(vendedor);
 			_context.SaveChanges();
+		}
+
+		public void Update(Vendedor vendedor) {
+
+			if (!_context.Vendedores.Any(x => x.Id == vendedor.Id)) {
+
+				throw new NotFoundException("Id não encontrado");
+
+			}
+			try {
+
+			_context.Update(vendedor);
+			_context.SaveChanges();
+
+			}catch(DbUpdateConcurrencyException e) {
+				throw new DbConcurrencyException(e.Message);
+			}
 		}
 	}
 }
