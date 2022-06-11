@@ -25,5 +25,19 @@ namespace TrabalhoMVC.Services {
 			_context.Add(vendedor);
 			_context.SaveChanges();
 		}
+
+		public Vendedor FindById(int id) {
+
+
+			return _context.Vendedores.FirstOrDefault(x => x.Id == id);
+		}
+
+		public void Remove(int id) {
+
+			var vendedor = _context.Vendedores.Find(id);
+
+			_context.Vendedores.Remove(vendedor);
+			_context.SaveChanges();
+		}
 	}
 }

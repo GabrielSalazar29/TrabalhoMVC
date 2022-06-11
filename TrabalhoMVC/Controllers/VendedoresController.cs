@@ -10,18 +10,18 @@ using TrabalhoMVC.Services;
 namespace TrabalhoMVC.Controllers {
 	public class VendedoresController : Controller {
 
-		private readonly VendedorService _sellerService;
+		private readonly VendedorService _vendedorService;
 		private readonly DepartamentoService _departamentoService;
 
 
-		public VendedoresController(VendedorService sellerService, DepartamentoService departamentoService) {
+		public VendedoresController(VendedorService vendedorService, DepartamentoService departamentoService) {
 
-			_sellerService = sellerService;
+			_vendedorService = vendedorService;
 			_departamentoService = departamentoService;
 
 		}
 		public IActionResult Index() {
-			var list = _sellerService.FindAll();
+			var list = _vendedorService.FindAll();
 
 			return View(list);
 		}
@@ -36,7 +36,31 @@ namespace TrabalhoMVC.Controllers {
 		[HttpPost]
 		public IActionResult Create(Vendedor vendedor) {
 
-			_sellerService.Insert(vendedor);
+			_vendedorService.Insert(vendedor);
+
+			return RedirectToAction(nameof(Index));
+		}
+
+		public IActionResult Delete(int? id) {
+
+			if (id == null) {
+
+				return NotFound();
+			}
+			var vendedor = _vendedorService.FindById(id.Value);
+			if (vendedor == null) {
+
+				return NotFound();
+			}
+
+			return View(vendedor);
+		}
+
+		[HttpPost]
+		public IActionResult Delete(int id) {
+
+
+			_vendedorService.Remove(id);
 
 			return RedirectToAction(nameof(Index));
 		}
