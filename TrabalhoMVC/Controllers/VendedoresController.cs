@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using TrabalhoMVC.Models;
@@ -46,12 +47,12 @@ namespace TrabalhoMVC.Controllers {
 
 			if (id == null) {
 
-				return NotFound();
+				return RedirectToAction(nameof(Error), new {message = "Id não fornecido" });
 			}
 			var vendedor = _vendedorService.FindById(id.Value);
 			if (vendedor == null) {
 
-				return NotFound();
+				return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
 			}
 
 			return View(vendedor);
@@ -70,12 +71,12 @@ namespace TrabalhoMVC.Controllers {
 
 			if (id == null) {
 
-				return NotFound();
+				return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
 			}
 			var vendedor = _vendedorService.FindById(id.Value);
 			if (vendedor == null) {
 
-				return NotFound();
+				return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
 			}
 
 			return View(vendedor);
@@ -85,12 +86,12 @@ namespace TrabalhoMVC.Controllers {
 
 			if (id == null) {
 
-				return NotFound();
+				return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
 			}
 			var vendedor = _vendedorService.FindById(id.Value);
 			if (vendedor == null) {
 
-				return NotFound();
+				return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
 			}
 
 			List<Departamento> departamentos = _departamentoService.FindAll();
@@ -102,20 +103,24 @@ namespace TrabalhoMVC.Controllers {
 		public IActionResult Edit(int id, Vendedor vendedor) {
 
 			if(id != vendedor.Id) {
-				return BadRequest();
+				return RedirectToAction(nameof(Error), new { message = "Id não são correspondentes" });
 			}
 
 			try {
 			_vendedorService.Update(vendedor);
 			return RedirectToAction(nameof(Index));
 
-			} catch (NotFoundException){
+			} catch (ApplicationException e){
 
-				return NotFound();
-			} catch (DbConcurrencyException) {
+				return RedirectToAction(nameof(Error), new { message = e.Message });
 
-				return BadRequest();
 			}
+		}
+		public IActionResult Error(string message) {
+
+			var viewModel = new ErrorViewModel { Message = message, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier};
+
+			return View(viewModel);
 		}
 	}
 }
