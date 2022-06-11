@@ -6,24 +6,17 @@ using TrabalhoMVC.Data;
 using TrabalhoMVC.Models;
 
 namespace TrabalhoMVC.Services {
-	public class VendedorService {
-
+	public class DepartamentoService {
 		private readonly TrabalhoMVCContext _context;
 
-		public VendedorService(TrabalhoMVCContext context) {
+		public DepartamentoService(TrabalhoMVCContext context) {
 
 			_context = context;
 		}
 
-		public List<Vendedor> FindAll() {
+		public List<Departamento> FindAll() {
 
-
-			return _context.Vendedores.ToList();
-		}
-
-		public void Insert(Vendedor vendedor) {
-			_context.Add(vendedor);
-			_context.SaveChanges();
+			return _context.Departamento.OrderBy(x => x.Nome).ToList();
 		}
 	}
 }

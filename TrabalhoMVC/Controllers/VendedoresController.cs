@@ -4,16 +4,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TrabalhoMVC.Models;
+using TrabalhoMVC.Models.ViewModels;
 using TrabalhoMVC.Services;
 
 namespace TrabalhoMVC.Controllers {
 	public class VendedoresController : Controller {
 
 		private readonly VendedorService _sellerService;
+		private readonly DepartamentoService _departamentoService;
 
-		public VendedoresController(VendedorService sellerService) {
+
+		public VendedoresController(VendedorService sellerService, DepartamentoService departamentoService) {
 
 			_sellerService = sellerService;
+			_departamentoService = departamentoService;
 
 		}
 		public IActionResult Index() {
@@ -24,7 +28,9 @@ namespace TrabalhoMVC.Controllers {
 
 		public IActionResult Create() {
 
-			return View();
+			var departamentos = _departamentoService.FindAll();
+			var viewModel = new VendedorFormViewModel { Departamentos = departamentos };
+			return View(viewModel);
 		}
 
 		[HttpPost]
