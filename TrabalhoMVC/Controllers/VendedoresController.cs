@@ -64,5 +64,20 @@ namespace TrabalhoMVC.Controllers {
 
 			return RedirectToAction(nameof(Index));
 		}
+
+		public IActionResult Details(int? id) {
+
+			if (id == null) {
+
+				return NotFound();
+			}
+			var vendedor = _vendedorService.FindById(id.Value);
+			if (vendedor == null) {
+
+				return NotFound();
+			}
+
+			return View(vendedor);
+		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace TrabalhoMVC.Services {
 		public Vendedor FindById(int id) {
 
 
-			return _context.Vendedores.FirstOrDefault(x => x.Id == id);
+			return _context.Vendedores.Include(x => x.Departamento).FirstOrDefault(x => x.Id == id);
 		}
 
 		public void Remove(int id) {
