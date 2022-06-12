@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -40,6 +42,16 @@ namespace TrabalhoMVC
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, SeedingService seedingService)
 		{
+			var br = new CultureInfo("pt-BR");
+			var localizationOptions = new RequestLocalizationOptions {
+				DefaultRequestCulture = new RequestCulture(br),
+				SupportedCultures = new List<CultureInfo> { br },
+				SupportedUICultures = new List<CultureInfo> { br }
+
+			};
+
+			app.UseRequestLocalization(localizationOptions);
+
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();

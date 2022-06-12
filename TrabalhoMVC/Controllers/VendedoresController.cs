@@ -38,8 +38,15 @@ namespace TrabalhoMVC.Controllers {
 		[HttpPost]
 		public IActionResult Create(Vendedor vendedor) {
 
-			_vendedorService.Insert(vendedor);
+			if (!ModelState.IsValid) {
 
+				var departaments = _departamentoService.FindAll();
+				var viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departaments };
+				return View(viewModel);
+
+			}
+
+			_vendedorService.Insert(vendedor);
 			return RedirectToAction(nameof(Index));
 		}
 
@@ -102,7 +109,15 @@ namespace TrabalhoMVC.Controllers {
 		[HttpPost]
 		public IActionResult Edit(int id, Vendedor vendedor) {
 
-			if(id != vendedor.Id) {
+			if (!ModelState.IsValid) {
+
+				var departaments = _departamentoService.FindAll();
+				var viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departaments };
+				return View(viewModel);
+
+			}
+
+			if (id != vendedor.Id) {
 				return RedirectToAction(nameof(Error), new { message = "Id não são correspondentes" });
 			}
 
