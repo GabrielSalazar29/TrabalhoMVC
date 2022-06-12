@@ -22,41 +22,41 @@ namespace TrabalhoMVC.Controllers {
 			_departamentoService = departamentoService;
 
 		}
-		public IActionResult Index() {
-			var list = _vendedorService.FindAll();
+		public async Task<IActionResult> Index() {
+			var list = await _vendedorService.FindAllAsync();
 
 			return View(list);
 		}
 
-		public IActionResult Create() {
+		public async Task<IActionResult> Create() {
 
-			var departamentos = _departamentoService.FindAll();
+			var departamentos = await _departamentoService.FindAllAsync();
 			var viewModel = new VendedorFormViewModel { Departamentos = departamentos };
 			return View(viewModel);
 		}
 
 		[HttpPost]
-		public IActionResult Create(Vendedor vendedor) {
+		public async Task<IActionResult> Create(Vendedor vendedor) {
 
 			if (!ModelState.IsValid) {
 
-				var departaments = _departamentoService.FindAll();
+				var departaments =await _departamentoService.FindAllAsync();
 				var viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departaments };
 				return View(viewModel);
 
 			}
 
-			_vendedorService.Insert(vendedor);
+			await _vendedorService.InsertAsync(vendedor);
 			return RedirectToAction(nameof(Index));
 		}
 
-		public IActionResult Delete(int? id) {
+		public async Task<IActionResult> Delete(int? id) {
 
 			if (id == null) {
 
 				return RedirectToAction(nameof(Error), new {message = "Id não fornecido" });
 			}
-			var vendedor = _vendedorService.FindById(id.Value);
+			var vendedor = await _vendedorService.FindByIdAsync(id.Value);
 			if (vendedor == null) {
 
 				return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
@@ -66,21 +66,21 @@ namespace TrabalhoMVC.Controllers {
 		}
 
 		[HttpPost]
-		public IActionResult Delete(int id) {
+		public async Task<IActionResult> Delete(int id) {
 
 
-			_vendedorService.Remove(id);
+			await _vendedorService.RemoveAsync(id);
 
 			return RedirectToAction(nameof(Index));
 		}
 
-		public IActionResult Details(int? id) {
+		public async Task<IActionResult> Details(int? id) {
 
 			if (id == null) {
 
 				return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
 			}
-			var vendedor = _vendedorService.FindById(id.Value);
+			var vendedor =await _vendedorService.FindByIdAsync(id.Value);
 			if (vendedor == null) {
 
 				return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
@@ -89,29 +89,29 @@ namespace TrabalhoMVC.Controllers {
 			return View(vendedor);
 		}
 
-		public IActionResult Edit(int? id) {
+		public async Task<IActionResult> Edit(int? id) {
 
 			if (id == null) {
 
 				return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
 			}
-			var vendedor = _vendedorService.FindById(id.Value);
+			var vendedor = await _vendedorService.FindByIdAsync(id.Value);
 			if (vendedor == null) {
 
 				return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
 			}
 
-			List<Departamento> departamentos = _departamentoService.FindAll();
+			List<Departamento> departamentos =await _departamentoService.FindAllAsync();
 			VendedorFormViewModel viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departamentos };
 			return View(viewModel);
 		}
 
 		[HttpPost]
-		public IActionResult Edit(int id, Vendedor vendedor) {
+		public async Task<IActionResult> Edit(int id, Vendedor vendedor) {
 
 			if (!ModelState.IsValid) {
 
-				var departaments = _departamentoService.FindAll();
+				var departaments = await _departamentoService.FindAllAsync();
 				var viewModel = new VendedorFormViewModel { Vendedor = vendedor, Departamentos = departaments };
 				return View(viewModel);
 
@@ -122,7 +122,7 @@ namespace TrabalhoMVC.Controllers {
 			}
 
 			try {
-			_vendedorService.Update(vendedor);
+			await _vendedorService.UpdateAsync(vendedor);
 			return RedirectToAction(nameof(Index));
 
 			} catch (ApplicationException e){

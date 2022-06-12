@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TrabalhoMVC.Data;
 using TrabalhoMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrabalhoMVC.Services {
 	public class DepartamentoService {
@@ -14,9 +15,9 @@ namespace TrabalhoMVC.Services {
 			_context = context;
 		}
 
-		public List<Departamento> FindAll() {
+		public async Task<List<Departamento>> FindAllAsync() {
 
-			return _context.Departamento.OrderBy(x => x.Nome).ToList();
+			return await _context.Departamento.OrderBy(x => x.Nome).ToListAsync();
 		}
 	}
 }

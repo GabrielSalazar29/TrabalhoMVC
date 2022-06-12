@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using TrabalhoMVC.Data;
 using TrabalhoMVC.Models;
 using TrabalhoMVC.Services.Exceptions;
+using Microsoft.EntityFrameworkCore;
 
 namespace TrabalhoMVC.Services {
 	public class VendedorService {
@@ -17,42 +18,44 @@ namespace TrabalhoMVC.Services {
 			_context = context;
 		}
 
-		public List<Vendedor> FindAll() {
+		public async Task<List<Vendedor>> FindAllAsync() {
 
 
-			return _context.Vendedores.ToList();
+			return await _context.Vendedores.ToListAsync();
 		}
 
-		public void Insert(Vendedor vendedor) {
+		public async Task InsertAsync(Vendedor vendedor) {
 			_context.Add(vendedor);
-			_context.SaveChanges();
+
+			await _context.SaveChangesAsync();
 		}
 
-		public Vendedor FindById(int id) {
+		public async Task<Vendedor> FindByIdAsync(int id) {
 
 
-			return _context.Vendedores.Include(x => x.Departamento).FirstOrDefault(x => x.Id == id);
+			return await _context.Vendedores.Include(x => x.Departamento).FirstOrDefaultAsync(x => x.Id == id);
 		}
 
-		public void Remove(int id) {
+		public async Task RemoveAsync(int id) {
 
-			var vendedor = _context.Vendedores.Find(id);
+			var vendedor = await _context.Vendedores.FindAsync(id);
 
 			_context.Vendedores.Remove(vendedor);
-			_context.SaveChanges();
+
+			await _context.SaveChangesAsync();
 		}
 
-		public void Update(Vendedor vendedor) {
+		public async Task UpdateAsync(Vendedor vendedor) {
 
-			if (!_context.Vendedores.Any(x => x.Id == vendedor.Id)) {
+			if (!(await _context.Vendedores.AnyAsync(x => x.Id == vendedor.Id))) {
 
 				throw new NotFoundException("Id não encontrado");
 
 			}
 			try {
 
-			_context.Update(vendedor);
-			_context.SaveChanges();
+				_context.Update(vendedor);
+				await _context.SaveChangesAsync();
 
 			}catch(DbUpdateConcurrencyException e) {
 				throw new DbConcurrencyException(e.Message);
