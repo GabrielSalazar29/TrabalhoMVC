@@ -32,7 +32,7 @@ namespace TrabalhoMVC.Models {
 		[Display(Name = "Departamento")]
 		public int DepartamentoId { get; set; }
 
-		public ICollection<RegistroVendas> Vendas { get; set; } = new List<RegistroVendas>();
+		public ICollection<RegistroVenda> Vendas { get; set; } = new List<RegistroVenda>();
 
 		public Vendedor() {
 
@@ -47,12 +47,12 @@ namespace TrabalhoMVC.Models {
 			Departamento = departamento;
 		}
 
-		public void AddVendas(RegistroVendas rv) {
+		public void AddVendas(RegistroVenda rv) {
 
 			Vendas.Add(rv);
 		}
 
-		public void RemoveVendas(RegistroVendas rv) {
+		public void RemoveVendas(RegistroVenda rv) {
 
 			Vendas.Remove(rv);
 		}

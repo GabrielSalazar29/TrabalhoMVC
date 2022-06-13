@@ -2,7 +2,7 @@
 using TrabalhoMVC.Models.Enums;
 
 namespace TrabalhoMVC.Models {
-	public class RegistroVendas {
+	public class RegistroVenda {
 		public int Id { get; set; }
 		public DateTime Data { get; set; }
 		public double Quantia { get; set; }
@@ -10,11 +10,11 @@ namespace TrabalhoMVC.Models {
 
 		public Vendedor Vendedor { get; set; }
 
-		public RegistroVendas() {
+		public RegistroVenda() {
 
 		}
 
-		public RegistroVendas(int id, DateTime data, double quantia, StatusVenda status, Vendedor vendedor) {
+		public RegistroVenda(int id, DateTime data, double quantia, StatusVenda status, Vendedor vendedor) {
 
 			Id = id;
 			Data = data;

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using TrabalhoMVC.Data;
 using TrabalhoMVC.Models;
 using TrabalhoMVC.Services.Exceptions;
-using Microsoft.EntityFrameworkCore;
 
 namespace TrabalhoMVC.Services {
 	public class VendedorService {
@@ -38,11 +37,19 @@ namespace TrabalhoMVC.Services {
 
 		public async Task RemoveAsync(int id) {
 
-			var vendedor = await _context.Vendedores.FindAsync(id);
+			try {
+				var vendedor = await _context.Vendedores.FindAsync(id);
 
-			_context.Vendedores.Remove(vendedor);
+				_context.Vendedores.Remove(vendedor);
 
-			await _context.SaveChangesAsync();
+				await _context.SaveChangesAsync();
+
+			} catch (DbUpdateException e) {
+
+				throw new IntegrityException("Não é possivel deletar o vendedor, pois ele(a) possui vendas.");
+			}
+
+			
 		}
 
 		public async Task UpdateAsync(Vendedor vendedor) {
