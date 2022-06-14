@@ -27,7 +27,7 @@
 </nav>
 
 @foreach (var departmentGroup in Model) {
-<div>
+<div class="mt-5">
 	<div>
 		<h3>@departmentGroup.Key.Nome , Total de Vendas = R$ @departmentGroup.Key.TotalVendas(minDate, maxDate).ToString("F2")</h3>
 	</div>
