@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using TrabalhoMVC.Data;
 using TrabalhoMVC.Models;
+using TrabalhoMVC.Services.Exceptions;
 
 namespace TrabalhoMVC.Controllers
 {
@@ -30,14 +32,14 @@ namespace TrabalhoMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             var departamento = await _context.Departamento
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (departamento == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
             }
 
             return View(departamento);
@@ -70,13 +72,13 @@ namespace TrabalhoMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             var departamento = await _context.Departamento.FindAsync(id);
             if (departamento == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
             }
             return View(departamento);
         }
@@ -90,7 +92,7 @@ namespace TrabalhoMVC.Controllers
         {
             if (id != departamento.Id)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Ids não são correspondentes" });
             }
 
             if (ModelState.IsValid)
@@ -104,7 +106,7 @@ namespace TrabalhoMVC.Controllers
                 {
                     if (!DepartamentoExists(departamento.Id))
                     {
-                        return NotFound();
+                        return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
                     }
                     else
                     {
@@ -121,14 +123,14 @@ namespace TrabalhoMVC.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não fornecido" });
             }
 
             var departamento = await _context.Departamento
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (departamento == null)
             {
-                return NotFound();
+                return RedirectToAction(nameof(Error), new { message = "Id não encontrado" });
             }
 
             return View(departamento);
@@ -149,5 +151,12 @@ namespace TrabalhoMVC.Controllers
         {
             return _context.Departamento.Any(e => e.Id == id);
         }
+        
+        public IActionResult Error(string message) {
+
+			var viewModel = new ErrorViewModel { Message = message, RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier};
+
+			return View(viewModel);
+		}
     }
 }
