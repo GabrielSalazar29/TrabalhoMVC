@@ -47,18 +47,13 @@ namespace TrabalhoMVC.Services {
 				result = result.Where(x => x.Data <= maxDate.Value);
 
 			}
-
-			var tb = result
+			return result
 				.Include(x => x.Vendedor)
 				.Include(x => x.Vendedor.Departamento)
 				.OrderByDescending(x => x.Data)
 				.ToList()
 				.GroupBy(x => x.Vendedor.Departamento)
-				.ToDictionary(x => x.Key, x => x.ToList());
-
-			
-
-			return tb;
+				.ToDictionary(x => x.Key, x => x.ToList()); 
 		}
 	}
 }
