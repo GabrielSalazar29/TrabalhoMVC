@@ -18,13 +18,13 @@
 					<input type="date" class="form-control" name="maxDate" value=@ViewData["maxDate"] />
 				</div>
 			</div>
-			<button type="submit" class="btn btn-primary">Filtro</button>
+			<button type="submit" class="btn btn-primary">Filtrar</button>
 		</form>
 	</div>
 </nav>
 <div>
 	<div>
-		<h3>Total de Vendas = @Model.Sum(obj => obj.Quantia).ToString("F2")</h3>
+		<h3>Total de Vendas = R$ @Model.Sum(obj => obj.Quantia).ToString("F2")</h3>
 	</div>
 	<div>
 		<table class="table table-striped table-hover">
