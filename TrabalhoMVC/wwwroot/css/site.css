@@ -74,6 +74,6 @@ body {
   .footer{
     padding: 10px;
     line-height: 25px;
-
+    max-height: none;
   }
 }
